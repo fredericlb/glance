@@ -11,15 +11,11 @@
   "mainOutput": "main",
   "dependencies": {
     "airflux": "^0.2.2",
-    "alt": "^0.16.5",
     "firebase": "^2.2.6",
-    "jss": "^1.0.8",
     "material-ui": "^0.8.0",
     "normalize.css": "~3.0.3",
     "react": "0.13.3",
-    "react-jss": "^1.0.0",
     "react-router": "0.13.3",
-    "react-style": "^0.5.5",
     "react-tap-event-plugin": "^0.1.7"
   },
   "devDependencies": {

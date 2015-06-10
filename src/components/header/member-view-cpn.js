@@ -51,6 +51,10 @@ class MemberView extends airflux.FluxComponent {
           <div style={{clear: "both"}}/>
           <div className="user-actions">
             <IconButton
+              iconClassName="mdi mdi-settings"/>
+            <IconButton
+              iconClassName="mdi mdi-account-multiple"/>
+            <IconButton
               iconClassName="mdi mdi-exit-to-app"
               onClick={() => UserActions.logout()}/>
           </div>

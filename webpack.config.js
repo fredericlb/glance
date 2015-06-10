@@ -48,8 +48,11 @@ module.exports = {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }, {
-      test: /\.(png|jpg|woff|woff2)$/,
+      test: /\.(png|jpg|woff|woff2|svg)/,
       loader: 'url-loader?limit=8192'
+    }, {
+      test: /\.(ttf|eot)/,
+      loader: "file-loader"
     }, {
         test: /\.less$/,
         loader: "style!css!less"

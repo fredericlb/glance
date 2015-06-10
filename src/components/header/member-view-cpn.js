@@ -4,6 +4,7 @@ import {Navigation} from "../../utils/mixins-decorators.js";
 import airflux from "airflux";
 import UserStore from "../../stores/user-store.js";
 import * as gravatar from "gravatar";
+import UserActions from "../../actions/user-actions.js";
 
 require("../../styles/header/member-view.less");
 
@@ -50,7 +51,8 @@ class MemberView extends airflux.FluxComponent {
           <div style={{clear: "both"}}/>
           <div className="user-actions">
             <IconButton
-              iconClassName="mdi mdi-exit-to-app"/>
+              iconClassName="mdi mdi-exit-to-app"
+              onClick={() => UserActions.logout()}/>
           </div>
           <div style={{clear: "both"}}/>
         </Paper>

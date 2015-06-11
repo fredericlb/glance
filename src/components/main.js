@@ -3,6 +3,7 @@ import Layout from "./layout-cpn.js";
 import Router from "react-router";
 import AddItem from "./add-item-cpn.js";
 import Login from "./login-cpn.js";
+import UsersAdmin from "./users-admin.js";
 
 var {Route, DefaultRoute} = Router;
 
@@ -14,6 +15,7 @@ var Routes = (
     <Route name="/" handler={Layout}>
         <DefaultRoute handler={AddItem}/>
         <Route name="login" handler={Login}/>
+        <Route name="users" handler={UsersAdmin}/>
     </Route>
 );
 

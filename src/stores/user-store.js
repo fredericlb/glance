@@ -31,7 +31,7 @@ class UserStore extends airflux.Store {
         };
         this.publishState();
       })
-        .catch(err => console.error(err));
+      .catch(err => console.error(err));
     }
 
     onLogout() {

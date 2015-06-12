@@ -6,7 +6,22 @@ import UserStore from "../../stores/user-store.js";
 import * as gravatar from "gravatar";
 import UserActions from "../../actions/user-actions.js";
 
-require("../../styles/header/member-view.less");
+const _s = {
+    "user-mail": {
+      marginLeft: 10,
+      lineHeight: "40px",
+      marginRight: 5
+    },
+    "avatar": {
+      borderRadius: 3,
+      float: "left"
+    },
+    "user-actions": {
+      float: "right"
+    },
+    "user-badge": {
+    }
+};
 
 @Navigation
 class MemberView extends airflux.FluxComponent {
@@ -46,10 +61,10 @@ class MemberView extends airflux.FluxComponent {
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}>
         <Paper zDepth={1} style={{padding: 1, position: "relative"}}>
-          <img src={gravatarUrl}/>
-          <span className="user-mail">{userInfos.email}</span>
+          <img src={gravatarUrl} style={_s.avatar}/>
+          <span style={_s["user-mail"]}>{userInfos.email}</span>
           <div style={{clear: "both"}}/>
-          <div className="user-actions">
+          <div style={_s["user-actions"]}>
             <IconButton
               iconClassName="mdi mdi-settings"/>
             <IconButton
@@ -76,7 +91,7 @@ class MemberView extends airflux.FluxComponent {
     }
 
     return (
-      <div className="member-view">
+      <div style={_s["member-view"]}>
         {content}
       </div>
     );

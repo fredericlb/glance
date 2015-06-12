@@ -1,14 +1,28 @@
-"use strict";
-
 var React = require("react/addons");
 import {RaisedButton, Paper, Menu, TextField} from "material-ui";
-
-require("../styles/add-item.less");
 
 var menuItems = [
     {payload: "1", text: "Accusé de lecture", toggle: true, defaultToggled: true},
     {payload: "2", text: "Nécessite validation", toggle: true}
 ];
+
+const _s = {
+  "base": {
+    marginTop: 10
+  },
+  "field-paper": {
+    padding: 10,
+    marginTop: 10
+  },
+  "textarea": {
+    width: "90%",
+    border: 0
+  },
+  "flags": {
+    marginTop: 10
+  }
+};
+
 
 class AddItem extends React.Component {
     constructor () {
@@ -38,7 +52,7 @@ class AddItem extends React.Component {
             content = this.renderAddButton();
         }
 
-        return <div className="AddItem">{content}</div>;
+        return <div style={_s.base}>{content}</div>;
     }
 
     renderEditable() {
@@ -48,11 +62,11 @@ class AddItem extends React.Component {
 
         return (
             <form>
-                <Paper zDepth={1} className="field-paper">
+                <Paper zDepth={1} style={_s["field-paper"]}>
                     <TextField hintText="Titre" multiLine={true} style={{width: "100%"}}/>
                     <TextField hintText="Description" multiLine={true} style={{width: "100%"}}/>
                 </Paper>
-                <div className="spaced flags">
+                <div style={_s.flags}>
                     <Menu menuItems={menuItems} autoWidth={false}/>
                 </div>
 

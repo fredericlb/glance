@@ -6,7 +6,13 @@ import {Paper, TextField, RaisedButton} from "material-ui";
 import UserActions from "../actions/user-actions";
 import UserStore from "../stores/user-store";
 
-require("../styles/login.less");
+var _s = {
+  "base": {
+    width: "50%",
+    margin: "auto",
+    marginTop: 50
+  }
+};
 
 class Login extends airflux.FluxComponent {
     constructor(props) {
@@ -41,7 +47,7 @@ class Login extends airflux.FluxComponent {
 
       return (
         <form>
-            <div className="fields">
+            <div style={{marginLeft: 10}}>
                 <TextField ref="mail"
                   hintText="E-mail" style={{width: "95%"}}/>
                 <input ref="password"
@@ -65,7 +71,7 @@ class Login extends airflux.FluxComponent {
         }
 
         return (
-            <div className="Login">
+            <div style={_s.base}>
                 <Paper zDepth={2}>
                   <div className="spacer">
                     {content}

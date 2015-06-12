@@ -1,4 +1,5 @@
 @import "../../node_modules/fixed-data-table/dist/fixed-data-table.css";
+@import "../../node_modules/mdi/css/materialdesignicons.css";
 
 h2 {
   margin: 0;
@@ -21,4 +22,27 @@ input[type="password"] {
 
 .clearer {
   clear:both;
+}
+
+html, body {
+  background: #efefef;
+}
+
+
+p {
+    margin:0;
+    padding:0;
+}
+
+.user-badge {
+  transition: height ease-out 100ms, border-color ease-out 200ms;
+  height: 42px;
+  overflow: hidden;
+  border: 1px solid #dedede;
+  borderRadius: 3px;
+
+  &.with-actions {
+    height: 84px;
+    border-color: #999;
+  }
 }

@@ -35,12 +35,28 @@ class UsersStore extends airflux.Store {
         });
     }
 
+    findInFirebaseCollection(user) {
+      return this._users.filter(u => user.$fbKey === u.$fbKey)[0];
+    }
+
+    _updateUser(user) {
+      var orig = this.findInFirebaseCollection(user);
+      let updatePassword = async () => {
+        // TODO We need the previous password :(
+      };
+      let updateEmail = async () => {
+        // TODO We need the previous password :(
+      };
+      let updateData = async () => {
+        // TODO
+      };
+    }
 
     onSave(user) {
       var isUpdate = user.$fbKey !== null;
 
       if (isUpdate) {
-        // TODO
+        this._updateUser();
       } else {
         this._createUser();
       }

@@ -5,8 +5,6 @@ import {Paper, TextField, RaisedButton} from "material-ui";
 import * as gravatar from "gravatar";
 import usersActions from "../../actions/users-actions.js";
 
-require("../../styles/users-admin.less");
-
 class UserCreationForm extends React.Component {
 
   constructor() {
@@ -15,8 +13,7 @@ class UserCreationForm extends React.Component {
       email: null,
       password: null,
       firstname: null,
-      lastname: null,
-
+      lastname: null
     };
   }
 
@@ -51,6 +48,7 @@ class UserCreationForm extends React.Component {
   updateUserFromProps(user) {
     if (!user) {
       this.reset();
+      return;
     }
 
     this.setState({
@@ -102,8 +100,8 @@ class UserCreationForm extends React.Component {
 
     return (
       <Paper zDepth={1}>
-        <form className="add-user-form">
-          <img src={gravatarUrl} className="user-icon"/>
+        <form style={{padding: 10}}>
+          <img src={gravatarUrl} style={{float: "right"}}/>
           <h2>{title}</h2>
           <TextField floatingLabelText="E-mail *"
             onChange={onFieldUpdate("email")} ref="email"

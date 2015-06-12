@@ -6,7 +6,7 @@ import {RouteHandler} from "react-router";
 
 // CSS
 require("normalize.css");
-require("../styles/main.css");
+require("../styles/defaults.less");
 
 import MUI from "material-ui";
 

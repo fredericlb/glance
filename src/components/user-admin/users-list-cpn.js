@@ -3,6 +3,16 @@ import airflux from "airflux";
 import {Paper} from "material-ui";
 import usersStore from "../../stores/users-store.js";
 
+const _s = {
+  "base": {
+    margin: "0 20px 0 20px"
+  },
+  "user-card": {
+    margin: 10,
+    cursor: "pointer"
+  }
+};
+
 class UsersList extends airflux.FluxComponent {
 
   constructor (props) {
@@ -17,7 +27,7 @@ class UsersList extends airflux.FluxComponent {
       return (
         <Paper zDepth={1} rounded={false} key={u.$fbKey}
           onClick={() => this.props.onSelect(u)}>
-          <div className="user-card">
+          <div style={_s["user-card"]}>
             <h3>{u.email}</h3>
             <div>{u.firstname} {u.lastname}</div>
           </div>
@@ -26,7 +36,7 @@ class UsersList extends airflux.FluxComponent {
     });
 
     return (
-      <div className="users-list-internal">
+      <div style={_s.base}>
         {_users}
       </div>
     );

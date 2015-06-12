@@ -7,7 +7,13 @@ import usersActions from "../actions/users-actions.js";
 import UserEditionForm from "./user-admin/user-edition-form-cpn.js";
 import UsersList from "./user-admin/users-list-cpn.js";
 
-require("../styles/users-admin.less");
+const _s = {
+  "action-pane": {
+    padding: 5,
+    width: "47%",
+    float: "left"
+  }
+};
 
 class UsersAdmin extends airflux.FluxComponent {
 
@@ -60,7 +66,7 @@ class UsersAdmin extends airflux.FluxComponent {
             </Tab>
           </Tabs>
         </div>
-        <div className="action-pane">
+        <div style={_s["action-pane"]}>
           {this.renderForAction()}
         </div>
       </div>

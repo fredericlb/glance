@@ -11,6 +11,7 @@ class UsersStore extends airflux.Store {
         this.listenTo(UsersActions.startChannel, this.onStartChannel);
         this.listenTo(UsersActions.stopChannel, this.onStopChannel);
         this.listenTo(UsersActions.save, this.onSave);
+        this.listenTo(UsersActions.update, this.onUpdate);
         this.users = [];
     }
 
@@ -21,10 +22,14 @@ class UsersStore extends airflux.Store {
         };
     }
 
-    _createUser(user) {
+    findInFirebaseCollection(user) {
+      return this._users.filter(u => user.$fbKey === u.$fbKey)[0];
+    }
+
+    onSave(user) {
       firebaseService.createUser(user.email, user.password)
         .then(() => {
-          this.firebaseRef.child(user.email.replace(".", "!")).set({
+          this.ref().child(user.email.replace(".", "!")).set({
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email
@@ -35,32 +40,11 @@ class UsersStore extends airflux.Store {
         });
     }
 
-    findInFirebaseCollection(user) {
-      return this._users.filter(u => user.$fbKey === u.$fbKey)[0];
-    }
-
-    _updateUser(user) {
-      var orig = this.findInFirebaseCollection(user);
-      let updatePassword = async () => {
-        // TODO We need the previous password :(
-      };
-      let updateEmail = async () => {
-        // TODO We need the previous password :(
-      };
-      let updateData = async () => {
-        // TODO
-      };
-    }
-
-    onSave(user) {
-      var isUpdate = user.$fbKey !== null;
-
-      if (isUpdate) {
-        this._updateUser();
-      } else {
-        this._createUser();
-      }
-
+    onUpdate(user, nextUser) {
+      this.ref().child(user.$fbKey).update({
+        firstname: nextUser.firstname,
+        lastname: nextUser.lastname
+      });
     }
 }
 

@@ -5,26 +5,30 @@ import {Paper, TextField, RaisedButton} from "material-ui";
 import * as gravatar from "gravatar";
 import usersActions from "../../actions/users-actions.js";
 
-class UserEditionForm extends React.Component {
+class UserCreationForm extends React.Component {
 
   constructor() {
     super();
     this.state = {
+      email: null,
+      password: null,
       firstname: null,
       lastname: null
     };
   }
 
   onSubmit() {
-    let {firstname, lastname} = this.state;
+    let {email, password, firstname, lastname} = this.state;
 
     let user = {
+      email: email,
+      password: password,
       firstname: firstname,
       lastname: lastname
     };
 
-    if (firstname !== "" && lastname !== "") {
-      usersActions.update(this.props.user, user);
+    if (email !== "" && password !== "" && firstname !== "" && lastname !== "") {
+      usersActions.save(user);
       this.reset();
     }
 
@@ -32,33 +36,15 @@ class UserEditionForm extends React.Component {
 
   reset() {
     this.setState({
+      email: null,
+      password: null,
       firstname: null,
       lastname: null
     });
   }
 
-  updateUserFromProps(user) {
-    if (!user) {
-      this.reset();
-      return;
-    }
-
-    this.setState({
-      firstname: user.firstname,
-      lastname: user.lastname
-    });
-  }
-
-  componentWillMount() {
-    this.updateUserFromProps(this.props.user);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.updateUserFromProps(nextProps.user);
-  }
-
   render() {
-    var gravatarUrl = gravatar.url(this.props.user.email, {
+    var gravatarUrl = gravatar.url(this.state.email, {
       s: "80",
       r: "pg"
     });
@@ -84,11 +70,21 @@ class UserEditionForm extends React.Component {
       };
     };
 
+    let title = "Nouvel utilisateur";
+
     return (
       <Paper zDepth={1}>
         <form style={{padding: 10}}>
           <img src={gravatarUrl} style={{float: "right"}}/>
-          <h2>{this.props.user.email}</h2>
+          <h2>{title}</h2>
+          <TextField floatingLabelText="E-mail *"
+            onChange={onFieldUpdate("email")} ref="email"
+            value={this.state.email}
+            errorText={getMessageFor("email")}/>
+          <TextField floatingLabelText="Mot de passe *"
+            onChange={onFieldUpdate("password")} ref="password"
+            value={this.state.password}
+            errorText={getMessageFor("password")}/>
           <TextField floatingLabelText="Prénom *"
             onChange={onFieldUpdate("firstname")} ref="firstname"
             value={this.state.firstname}
@@ -109,4 +105,4 @@ class UserEditionForm extends React.Component {
   }
 }
 
-export default UserEditionForm;
+export default UserCreationForm;

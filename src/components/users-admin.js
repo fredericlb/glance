@@ -2,9 +2,10 @@
 
 var React = require("react/addons");
 import airflux from "airflux";
-import {Tabs, Tab} from "material-ui";
+import {Tabs, Tab, RaisedButton} from "material-ui";
 import usersActions from "../actions/users-actions.js";
 import UserEditionForm from "./user-admin/user-edition-form-cpn.js";
+import UserCreationForm from "./user-admin/user-creation-form-cpn.js";
 import UsersList from "./user-admin/users-list-cpn.js";
 
 const _s = {
@@ -26,7 +27,7 @@ class UsersAdmin extends airflux.FluxComponent {
 
   renderForAction() {
     if (this.state.currentAction === "new-user") {
-      return <UserEditionForm/>;
+      return <UserCreationForm/>;
     } else if (this.state.currentAction === "edit-user") {
       return <UserEditionForm user={this.state.currentUser}/>;
     }
@@ -67,7 +68,12 @@ class UsersAdmin extends airflux.FluxComponent {
           </Tabs>
         </div>
         <div style={_s["action-pane"]}>
-          {this.renderForAction()}
+          <RaisedButton label="Ajouter un utilisateur" primary={true}
+            style={{marginRight: 10}}/>
+          <RaisedButton label="Ajouter un groupe" primary={true}/>
+          <div style={{marginTop: 20}}>
+            {this.renderForAction()}
+          </div>
         </div>
       </div>
     );

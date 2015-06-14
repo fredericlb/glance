@@ -11,11 +11,12 @@ class Header extends React.Component {
   }
 
   render() {
-    var iconRight =
-      <div className="appbar-right">
+    var iconRight = (
+      <div style={{width: 500}}>
         <MemberView/>
         <ChannelsDropdown/>
-      </div>;
+      </div>
+    );
 
     return (
       <div className="header">

@@ -92,16 +92,17 @@ class UserEditionForm extends React.Component {
           <TextField floatingLabelText="Prénom *"
             onChange={onFieldUpdate("firstname")} ref="firstname"
             value={this.state.firstname}
-            errorText={getMessageFor("firstname")}/>
+            errorText={getMessageFor("firstname")}
+            style={{width: "100%"}}/>
           <TextField floatingLabelText="Nom *"
             onChange={onFieldUpdate("lastname")} ref="lastname"
             value={this.state.lastname}
-            errorText={getMessageFor("lastname")}/>
+            errorText={getMessageFor("lastname")}
+            style={{width: "100%"}}/>
           <div className="clearer"/>
-          <div className="button-bar">
-            <RaisedButton label="Envoyer" primary={true}
-              onClick={onSubmit}/>
-          </div>
+          <RaisedButton label="Envoyer" primary={true}
+            onClick={onSubmit}
+            style={{width: "100%"}}/>
           <div className="clearer"/>
         </form>
       </Paper>

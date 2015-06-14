@@ -1,5 +1,3 @@
-"use strict";
-
 var React = require("react/addons");
 import {Paper, TextField, RaisedButton} from "material-ui";
 import * as gravatar from "gravatar";
@@ -80,24 +78,26 @@ class UserCreationForm extends React.Component {
           <TextField floatingLabelText="E-mail *"
             onChange={onFieldUpdate("email")} ref="email"
             value={this.state.email}
-            errorText={getMessageFor("email")}/>
+            errorText={getMessageFor("email")}
+            style={{maxWidth: "100%"}}/>
           <TextField floatingLabelText="Mot de passe *"
             onChange={onFieldUpdate("password")} ref="password"
             value={this.state.password}
-            errorText={getMessageFor("password")}/>
+            errorText={getMessageFor("password")}
+            style={{width: "100%"}}/>
           <TextField floatingLabelText="Prénom *"
             onChange={onFieldUpdate("firstname")} ref="firstname"
             value={this.state.firstname}
-            errorText={getMessageFor("firstname")}/>
+            errorText={getMessageFor("firstname")}
+            style={{width: "100%"}}/>
           <TextField floatingLabelText="Nom *"
             onChange={onFieldUpdate("lastname")} ref="lastname"
             value={this.state.lastname}
-            errorText={getMessageFor("lastname")}/>
+            errorText={getMessageFor("lastname")}
+            style={{width: "100%"}}/>
           <div className="clearer"/>
-          <div className="button-bar">
             <RaisedButton label="Envoyer" primary={true}
-              onClick={onSubmit}/>
-          </div>
+              onClick={onSubmit} style={{width: "100%"}}/>
           <div className="clearer"/>
         </form>
       </Paper>

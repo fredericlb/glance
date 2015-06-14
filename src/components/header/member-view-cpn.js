@@ -20,6 +20,9 @@ const _s = {
       float: "right"
     },
     "user-badge": {
+    },
+    "member-view": {
+      float: "right"
     }
 };
 
@@ -56,7 +59,6 @@ class MemberView extends airflux.FluxComponent {
     }
 
     return (
-
       <div className={classes.join(" ")}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}>

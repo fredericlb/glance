@@ -63,14 +63,16 @@ class UsersAdmin extends airflux.FluxComponent {
             <Tab label="Utilisateurs">
               <UsersList
                 width={this.state.listWidth}
-                onSelect={onUserSelected}/>
+                onSelect={onUserSelected}
+                selectedUser={this.state.currentUser}/>
             </Tab>
           </Tabs>
         </div>
         <div style={_s["action-pane"]}>
-          <RaisedButton label="Ajouter un utilisateur" primary={true}
-            style={{marginRight: 10}}/>
-          <RaisedButton label="Ajouter un groupe" primary={true}/>
+          <RaisedButton label="Ajouter un utilisateur" secondary={true}
+            style={{marginRight: 10}}
+            onClick={() => this.setState({currentAction: "new-user", currentUser: null})}/>
+          <RaisedButton label="Ajouter un groupe" secondary={true}/>
           <div style={{marginTop: 20}}>
             {this.renderForAction()}
           </div>

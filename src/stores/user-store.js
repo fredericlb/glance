@@ -10,6 +10,22 @@ class UserStore extends airflux.Store {
         this.listenTo(UserActions.logout, this.onLogout);
         this.loggedIn = false;
         this.userInfos = {};
+        firebaseService.ref.onAuth(this.onAuth.bind(this));
+    }
+
+    onAuth(authInfos) {
+      if (authInfos && !this.loggedIn) {
+        this.userInfos = {
+          email: authInfos.password.email,
+          authData: authInfos
+        };
+        this.loggedIn = true;
+        this.publishState();
+      } else if (!authInfos && this.loggedIn) {
+        this.loggedIn = false;
+        this.userInfos = {};
+        this.publishState();
+      }
     }
 
     get state() {
@@ -23,22 +39,12 @@ class UserStore extends airflux.Store {
       firebaseService.login({
         email: mail,
         password: password
-      }).then(authData => {
-        this.loggedIn = true;
-        this.userInfos = {
-          email: mail,
-          authData: authData
-        };
-        this.publishState();
       })
       .catch(err => console.error(err));
     }
 
     onLogout() {
       firebaseService.logout();
-      this.loggedIn = false;
-      this.userInfos = {};
-      this.publishState();
     }
 }
 

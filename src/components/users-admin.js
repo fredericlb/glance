@@ -4,9 +4,13 @@ var React = require("react/addons");
 import airflux from "airflux";
 import {Tabs, Tab, RaisedButton} from "material-ui";
 import usersActions from "../actions/users-actions.js";
+import groupsActions from "../actions/groups-actions.js";
 import UserEditionForm from "./user-admin/user-edition-form-cpn.js";
 import UserCreationForm from "./user-admin/user-creation-form-cpn.js";
 import UsersList from "./user-admin/users-list-cpn.js";
+import GroupsList from "./user-admin/group-list-cpn";
+import GroupEditionForm from "./user-admin/group-edition-form-cpn";
+import GroupCreationForm from "./user-admin/group-creation-form-cpn";
 
 const _s = {
   "action-pane": {
@@ -22,6 +26,7 @@ class UsersAdmin extends airflux.FluxComponent {
     super(props);
     this.state.currentAction = "new-user";
     this.state.currentUser = {};
+    this.state.currentGroup = {};
     this.state.listWidth = 0;
   }
 
@@ -30,6 +35,12 @@ class UsersAdmin extends airflux.FluxComponent {
       return <UserCreationForm/>;
     } else if (this.state.currentAction === "edit-user") {
       return <UserEditionForm user={this.state.currentUser}/>;
+    } else if (this.state.currentAction === "edit-group") {
+      return <GroupEditionForm group={this.state.currentGroup}/>;
+    } else if (this.state.currentAction === "new-group") {
+      return <GroupCreationForm/>;
+    } else {
+      return <div/>;
     }
   }
 
@@ -39,10 +50,12 @@ class UsersAdmin extends airflux.FluxComponent {
       listWidth: node.getElementsByClassName("list")[0].offsetWidth
     });
     usersActions.startChannel();
+    groupsActions.startChannel();
   }
 
   componentWillUnmount(){
     usersActions.stopChannel();
+    groupsActions.startChannel();
   }
 
   render() {
@@ -53,12 +66,21 @@ class UsersAdmin extends airflux.FluxComponent {
         currentUser: u
       });
     };
+    let onGroupSelected = (g) => {
+      this.setState({
+        currentAction: "edit-group",
+        currentGroup: g
+      });
+    };
 
     return (
       <div className="users-admin">
         <div className="list" style={{float: "left", width: "50%"}}>
           <Tabs>
             <Tab label="Groupes">
+              <GroupsList
+                onSelect={onGroupSelected}
+                selectedGroup={this.state.currentGroup}/>
             </Tab>
             <Tab label="Utilisateurs">
               <UsersList
@@ -72,7 +94,8 @@ class UsersAdmin extends airflux.FluxComponent {
           <RaisedButton label="Ajouter un utilisateur" secondary={true}
             style={{marginRight: 10}}
             onClick={() => this.setState({currentAction: "new-user", currentUser: null})}/>
-          <RaisedButton label="Ajouter un groupe" secondary={true}/>
+          <RaisedButton label="Ajouter un groupe" secondary={true}
+            onClick={() => this.setState({currentAction: "new-group", currentGroup: null})}/>
           <div style={{marginTop: 20}}>
             {this.renderForAction()}
           </div>

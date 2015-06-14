@@ -20,7 +20,8 @@
     "normalize.css": "~3.0.3",
     "react": "0.13.3",
     "react-router": "0.13.3",
-    "react-tap-event-plugin": "^0.1.7"
+    "react-tap-event-plugin": "^0.1.7",
+    "validator": "^3.40.1"
   },
   "devDependencies": {
     "babel": "^5.5.4",

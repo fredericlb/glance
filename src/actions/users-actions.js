@@ -1,8 +1,12 @@
-import airflux from "airflux";
+import alt from "../alt";
 
-export default {
-    startChannel: new airflux.Action().asFunction,
-    stopChannel: new airflux.Action().asFunction,
-    save: new airflux.Action().asFunction,
-    update: new airflux.Action().asFunction
-};
+class UsersActions {
+  startChannel() { this.dispatch({}); }
+  stopChannel() { this.dispatch({}); }
+  save(user) { this.dispatch({ user }); }
+  update(user, nextUser) { this.dispatch({user, nextUser}); }
+}
+
+let Actions = alt.createActions(UsersActions);
+
+export default Actions;

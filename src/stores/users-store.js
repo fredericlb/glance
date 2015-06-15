@@ -1,32 +1,23 @@
-import airflux from "airflux";
+import alt from "../alt";
 import UsersActions from "../actions/users-actions";
 import {firebaseEvents} from "../utils/mixins-decorators.js";
 var firebaseService = require("../utils/firebase-service");
 
-@firebaseEvents(firebaseService, "users", "users")
-class UsersStore extends airflux.Store {
+@firebaseEvents(firebaseService, "users")
+class UsersStore {
 
     constructor() {
-        super();
-        this.listenTo(UsersActions.startChannel, this.onStartChannel);
-        this.listenTo(UsersActions.stopChannel, this.onStopChannel);
-        this.listenTo(UsersActions.save, this.onSave);
-        this.listenTo(UsersActions.update, this.onUpdate);
-        this.users = [];
+      this.bindListeners({
+        onStartChannel: UsersActions.startChannel,
+        onStopChannel: UsersActions.stopChannel,
+        onSave: UsersActions.save,
+        onUpdate: UsersActions.update
+      });
+
+      this.list = [];
     }
 
-    get state() {
-        return {
-          list: this.users,
-          listening: this.firebaseRef !== null
-        };
-    }
-
-    findInFirebaseCollection(user) {
-      return this._users.filter(u => user.$fbKey === u.$fbKey)[0];
-    }
-
-    onSave(user) {
+    onSave({user}) {
       firebaseService.createUser(user.email, user.password)
         .then(() => {
           this.ref().child(user.email.replace(".", "!")).set({
@@ -40,7 +31,8 @@ class UsersStore extends airflux.Store {
         });
     }
 
-    onUpdate(user, nextUser) {
+    onUpdate(opts) {
+      let {user, nextUser} = opts;
       this.ref().child(user.$fbKey).update({
         firstname: nextUser.firstname,
         lastname: nextUser.lastname
@@ -48,4 +40,4 @@ class UsersStore extends airflux.Store {
     }
 }
 
-export default new UsersStore();
+export default alt.createStore(UsersStore);

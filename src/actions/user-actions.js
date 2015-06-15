@@ -1,6 +1,11 @@
-import airflux from "airflux";
+import alt from "../alt";
 
-export default {
-    login: new airflux.Action().asFunction,
-    logout: new airflux.Action().asFunction
-};
+class UserActions {
+  login(mail, password) { this.dispatch({mail, password}); }
+  logout() { this.dispatch(); }
+  firebaseUpdate(authInfos) { this.dispatch({authInfos}); }
+}
+
+let Actions = alt.createActions(UserActions);
+
+export default Actions;

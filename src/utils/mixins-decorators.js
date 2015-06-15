@@ -1,5 +1,6 @@
 import Router from "react-router";
 import lo from "lodash";
+import Radium from "radium";
 
 export function Navigation(klass) {
   klass.contextTypes = Router.Navigation.contextTypes;
@@ -13,7 +14,7 @@ export function Navigation(klass) {
   return klass;
 }
 
-export function firebaseEvents(service, ref, targetProperty) {
+export function firebaseEvents(service, ref) {
   return function(klass) {
     Object.defineProperty(klass, "_firebaseRef", {
       writable: true
@@ -22,16 +23,15 @@ export function firebaseEvents(service, ref, targetProperty) {
     var onChildAdded = function(snapshot) {
       let val = snapshot.val();
       val.$fbKey = snapshot.key();
-      this[targetProperty].push(val);
-
-      this.publishState();
+      this.list.push(val);
+      this.emitChange();
     };
 
     var onChildUpdated = function(snapshot) {
       let val = snapshot.val();
       let key = snapshot.key();
 
-      let idx = lo.findIndex(this[targetProperty],
+      let idx = lo.findIndex(this.list,
         (el) => key === el.$fbKey);
 
       if (idx === -1) {
@@ -39,19 +39,18 @@ export function firebaseEvents(service, ref, targetProperty) {
       }
 
       val.$fbKey = key;
-      this[targetProperty][idx] = val;
-      this.publishState();
+      this.list[idx] = val;
+      this.emitChange();
     };
 
     var onChildRemoved = function(snapshot) {
       let key = snapshot.key();
 
-      let idx = lo.findIndex(this[targetProperty],
+      let idx = lo.findIndex(this.list,
         (el) => key === el.$fbKey);
 
-      this[targetProperty].splice(idx, 1);
-
-      this.publishState();
+      this.list.splice(idx, 1);
+      this.emitChange();
     };
 
 
@@ -83,9 +82,55 @@ export function firebaseEvents(service, ref, targetProperty) {
         this._firebaseRef.off("child_removed",
           this._firebaseBoundChildRemovedListener);
         this._firebaseRef = null;
-        this.publishState();
       }
     };
 
+  };
+}
+
+export function Style(styleObject) {
+  return (klass) => {
+    var styles = new Map();
+    var styleConds = new Map();
+    styleConds.set("$root", new Map());
+
+    Object.keys(styleObject).forEach((key) => {
+      let value = styleObject[key];
+      styleConds.set(key, new Map());
+      if (value.$applyIf) {
+        styleConds.get("$root").set(key, value.$applyIf);
+      }
+      if (value.$sub) {
+        Object.keys(value.$sub).forEach((subKey) => {
+          let subValue = styleObject[key].$sub[subKey];
+          styleConds.get(key).set(subKey, subValue.$applyIf);
+          delete subValue.$applyIf;
+          styles.set(`${key}/${subKey}`, subValue);
+        });
+      }
+      delete value.$sub;
+      delete value.$applyIf;
+      styles.set(key, value);
+    });
+
+    klass.prototype._ = function(key) {
+      if (!styles.has(key)) {
+        console.warn(`Tried to refer a style with unknown key : ${key}`);
+      } else if (
+          styles.get(key).$applyIf &&
+          !styles.get(key).$applyIf(this.state, this.props)) {
+        return [{}];
+      } else {
+        var clss = [styles.get(key)];
+        for (let sub of styleConds.get(key).entries()) {
+          if (sub[1].call(this, this.state, this.props)) {
+            clss.push(styles.get(`${key}/${sub[0]}`));
+          }
+        }
+        return clss;
+      }
+    };
+
+    return Radium(klass);
   };
 }

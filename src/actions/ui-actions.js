@@ -1,5 +1,6 @@
-import airflux from "airflux";
+import alt from "../alt";
 
-export default {
-    toggleMainMenu: new airflux.Action().asFunction
-};
+class UiActions {
+}
+
+export default alt.createActions(UiActions);

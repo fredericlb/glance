@@ -1,25 +1,27 @@
 var React = require("react/addons");
-import airflux from "airflux";
+import connectToStores from "alt/utils/connectToStores";
 import usersStore from "../../stores/users-store.js";
-import lo from "lodash";
+import {Style} from "../../utils/mixins-decorators";
 
-const _s = {
-  "base": {
-    margin: "0 20px 0 20px"
-  },
-  "user-card": {
+@Style({
+  "card": {
     margin: 10,
-    cursor: "pointer",
     backgroundColor: "white",
     padding: 10,
-    border: "1px solid #CDCDCD",
-    borderLeft: "5px solid #CDCDCD",
-
-    rules: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderLeftWidth: 5,
+    borderLeftStyle: "solid",
+    $sub: {
+      notSelected: {
+        cursor: "pointer",
+        borderColor: "#CDCDCD",
+        $applyIf: (s, p) => !p.isSelected
+      },
       selected: {
         cursor: "auto",
-        border: "1px solid red",
-        borderLeft: "5px solid red"
+        borderColor: "red",
+        $applyIf: (s, p) => p.isSelected
       }
     }
   },
@@ -30,47 +32,51 @@ const _s = {
     top: -3,
     color: "#CDCDCD",
 
-    rules: {
+    $sub: {
       "selected": {
-        color: "red"
+        color: "red",
+        $applyIf: (s, p) => p.isSelected
       }
     }
   }
-};
+})
+class UserItem extends React.Component {
+  render() {
+    let u = this.props.user;
+    return (
+      <div style={this._("card")}
+        onClick={() => this.props.onSelect(u)}>
+        <i className="mdi mdi-chevron-right"
+          style={this._("arrow")}/>
+        <h3>{u.email}</h3>
+        <div>{u.firstname} {u.lastname}</div>
+      </div>
+    );
+  }
+}
 
-const S = (cls, rule) => {
-  return lo.merge({}, _s[cls], _s[cls].rules[rule]);
-};
 
-
-class UsersList extends airflux.FluxComponent {
+@connectToStores
+class UsersList extends React.Component {
 
   constructor (props) {
     super(props, {users: usersStore});
   }
 
+  static getStores() { return [usersStore]; }
+  static getPropsFromStores() { return {users: usersStore.getState()}; }
+
   render() {
-    let users = this.state.users.list;
+    let users = this.props.users.list;
     let {width} = this.props;
 
     var _users = users.map(u => {
       var isSelected = this.props.selectedUser && this.props.selectedUser.$fbKey === u.$fbKey;
-
-      var arrowStyle = isSelected ? S("arrow", "selected") : _s.arrow;
-      var cardStyle = isSelected ? S("user-card", "selected") : _s["user-card"];
-      return (
-        <div style={cardStyle} key={u.email}
-          onClick={() => this.props.onSelect(u)}>
-          <i className="mdi mdi-chevron-right"
-            style={arrowStyle}/>
-          <h3>{u.email}</h3>
-          <div>{u.firstname} {u.lastname}</div>
-        </div>
-      );
+      return <UserItem key={u.$fbKey} user={u} isSelected={isSelected} onSelect={this.props.onSelect}/>;
     });
 
     return (
-      <div style={_s.base}>
+      <div style={{margin: "0 20px 0 20px"}}>
         {_users}
       </div>
     );

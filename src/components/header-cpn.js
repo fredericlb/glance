@@ -21,7 +21,6 @@ class Header extends React.Component {
     return (
       <div className="header">
         <AppBar title="Glance"
-            onLeftIconButtonTouchTap={UiActions.toggleMainMenu}
             iconElementRight={iconRight}/>
       </div>
     );

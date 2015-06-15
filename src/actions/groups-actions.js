@@ -1,8 +1,10 @@
-import airflux from "airflux";
+import alt from "../alt";
 
-export default {
-    startChannel: new airflux.Action().asFunction,
-    stopChannel: new airflux.Action().asFunction,
-    save: new airflux.Action().asFunction,
-    update: new airflux.Action().asFunction
-};
+class GroupsActions {
+  startChannel() { this.dispatch({}); }
+  stopChannel() { this.dispatch({}); }
+  save(group) { this.dispatch({ group }); }
+  update(group, nextGroup) { this.dispatch({group, nextGroup}); }
+}
+
+export default alt.createActions(GroupsActions);

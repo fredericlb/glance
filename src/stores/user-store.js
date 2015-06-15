@@ -1,41 +1,28 @@
-import airflux from "airflux";
+import alt from "../alt";
 import UserActions from "../actions/user-actions";
-
 var firebaseService = require("../utils/firebase-service");
 
-class UserStore extends airflux.Store {
+class UserStore {
     constructor() {
-        super();
-        this.listenTo(UserActions.login, this.onLogin);
-        this.listenTo(UserActions.logout, this.onLogout);
-        this.loggedIn = false;
-        this.userInfos = {};
-        firebaseService.ref.onAuth(this.onAuth.bind(this));
+      this.bindActions(UserActions);
+      this.loggedIn = false;
+      this.userInfos = {};
     }
 
-    onAuth(authInfos) {
+    onFirebaseUpdate({authInfos}) {
       if (authInfos && !this.loggedIn) {
         this.userInfos = {
-          email: authInfos.password.email,
-          authData: authInfos
+          email: authInfos.password.email
         };
         this.loggedIn = true;
-        this.publishState();
       } else if (!authInfos && this.loggedIn) {
         this.loggedIn = false;
-        this.userInfos = {};
-        this.publishState();
+        this.useerInfos = {};
       }
     }
 
-    get state() {
-        return {
-          loggedIn: this.loggedIn,
-          userInfos: this.userInfos
-        };
-    }
-
-    onLogin(mail, password) {
+    onLogin(opts) {
+      let {mail, password} = opts;
       firebaseService.login({
         email: mail,
         password: password
@@ -44,8 +31,10 @@ class UserStore extends airflux.Store {
     }
 
     onLogout() {
-      firebaseService.logout();
+      setImmediate(() => {
+        firebaseService.logout();
+      });
     }
 }
 
-export default new UserStore();
+export default alt.createStore(UserStore);

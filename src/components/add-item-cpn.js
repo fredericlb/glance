@@ -1,12 +1,12 @@
 var React = require("react/addons");
 import {RaisedButton, Paper, Menu, TextField} from "material-ui";
-
+import {Style} from "../utils/mixins-decorators";
 var menuItems = [
     {payload: "1", text: "Accusé de lecture", toggle: true, defaultToggled: true},
     {payload: "2", text: "Nécessite validation", toggle: true}
 ];
 
-const _s = {
+@Style({
   "base": {
     marginTop: 10
   },
@@ -21,9 +21,7 @@ const _s = {
   "flags": {
     marginTop: 10
   }
-};
-
-
+})
 class AddItem extends React.Component {
     constructor () {
         super();
@@ -52,7 +50,7 @@ class AddItem extends React.Component {
             content = this.renderAddButton();
         }
 
-        return <div style={_s.base}>{content}</div>;
+        return <div style={this._("base")}>{content}</div>;
     }
 
     renderEditable() {
@@ -62,11 +60,11 @@ class AddItem extends React.Component {
 
         return (
             <form>
-                <Paper zDepth={1} style={_s["field-paper"]}>
+                <Paper zDepth={1} style={this._("field-paper")}>
                     <TextField hintText="Titre" multiLine={true} style={{width: "100%"}}/>
                     <TextField hintText="Description" multiLine={true} style={{width: "100%"}}/>
                 </Paper>
-                <div style={_s.flags}>
+                <div style={this._("flags")}>
                     <Menu menuItems={menuItems} autoWidth={false}/>
                 </div>
 

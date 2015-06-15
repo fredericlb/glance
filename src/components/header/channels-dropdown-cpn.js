@@ -1,6 +1,6 @@
 var React = require("react/addons");
 import {DropDownMenu} from "material-ui";
-import airflux from "airflux";
+import {Style} from "../../utils/mixins-decorators";
 
 var menuItems = [
    { payload: "1", text: "Never" },
@@ -10,15 +10,17 @@ var menuItems = [
    { payload: "5", text: "Weekly" },
 ];
 
-var _s = {
-  float: "left",
-  position: "relative",
-  top: 1,
-  borderBottom: 0,
-  backgroundColor: "#EFEFEF"
-};
 
-class ChannelsDropdown extends airflux.FluxComponent {
+@Style({
+  "base": {
+    float: "left",
+    position: "relative",
+    top: 1,
+    borderBottom: 0,
+    backgroundColor: "#EFEFEF"
+  }
+})
+class ChannelsDropdown extends React.Component {
 
   constructor(props) {
       super(props);
@@ -26,7 +28,7 @@ class ChannelsDropdown extends airflux.FluxComponent {
 
   render() {
     return (
-      <div style={_s}>
+      <div style={this._("base")}>
         <DropDownMenu menuItems={menuItems}/>
       </div>
     );

@@ -1,12 +1,15 @@
 var React = require("react/addons");
 import {RaisedButton, Paper, IconButton} from "material-ui";
-import {Navigation} from "../../utils/mixins-decorators.js";
-import airflux from "airflux";
+import {Navigation, Style} from "../../utils/mixins-decorators.js";
 import UserStore from "../../stores/user-store.js";
 import * as gravatar from "gravatar";
 import UserActions from "../../actions/user-actions.js";
+import connectToStores from "alt/utils/connectToStores";
+import firebaseService from "../../utils/firebase-service";
 
-const _s = {
+@connectToStores
+@Navigation
+@Style({
     "user-mail": {
       marginLeft: 10,
       lineHeight: "40px",
@@ -20,18 +23,41 @@ const _s = {
       float: "right"
     },
     "user-badge": {
+      height: 42,
+      overflow: "hidden",
+      border: "1px solid #dedede",
+      borderRadius: 3,
+      transition: "height ease-out 100ms, border-color ease-out 200ms",
+      $sub: {
+        "with-actions": {
+          height: 84,
+          borderColor: "#999",
+          $applyIf: (s) => s.fullDisplay
+        }
+      }
     },
     "member-view": {
       float: "right"
-    }
-};
+    }}
+)
+class MemberView extends React.Component {
 
-@Navigation
-class MemberView extends airflux.FluxComponent {
+  static getStores() { return [UserStore]; }
+  static getPropsFromStores() { return {user: UserStore.getState()}; }
 
   constructor(props) {
-      super(props, {user: UserStore});
-      this.state.fullDisplay = false;
+    super(props);
+    this.state = {
+      fullDisplay: false
+    };
+  }
+
+  componentDidMount() {
+    setImmediate(() => {
+      firebaseService.ref.onAuth((e) => {
+        UserActions.firebaseUpdate(e);
+      });
+    });
   }
 
   renderConnectButton() {
@@ -43,7 +69,7 @@ class MemberView extends airflux.FluxComponent {
   }
 
   renderMember() {
-    let {loggedIn, userInfos} = this.state.user;
+    let {loggedIn, userInfos} = this.props.user;
     var gravatarUrl = gravatar.url(userInfos.email, {
       s: "40",
       r: "pg",
@@ -59,14 +85,14 @@ class MemberView extends airflux.FluxComponent {
     }
 
     return (
-      <div className={classes.join(" ")}
+      <div style={this._("user-badge")}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}>
         <Paper zDepth={1} style={{padding: 1, position: "relative"}}>
-          <img src={gravatarUrl} style={_s.avatar}/>
-          <span style={_s["user-mail"]}>{userInfos.email}</span>
+          <img src={gravatarUrl} style={this._("avatar")}/>
+          <span style={this._("user-mail")}>{userInfos.email}</span>
           <div style={{clear: "both"}}/>
-          <div style={_s["user-actions"]}>
+          <div style={this._("user-actions")}>
             <IconButton
               iconClassName="mdi mdi-settings"/>
             <IconButton
@@ -83,7 +109,7 @@ class MemberView extends airflux.FluxComponent {
   }
 
   render() {
-    let {loggedIn} = this.state.user;
+    let {loggedIn} = this.props.user;
     let content;
     if (loggedIn) {
       content = this.renderMember();
@@ -93,7 +119,7 @@ class MemberView extends airflux.FluxComponent {
     }
 
     return (
-      <div style={_s["member-view"]}>
+      <div style={this._("member-view")}>
         {content}
       </div>
     );

@@ -1,23 +1,25 @@
 "use strict";
 
 var React = require("react/addons");
-import airflux from "airflux";
 import {Paper, TextField, RaisedButton} from "material-ui";
 import UserActions from "../actions/user-actions";
 import UserStore from "../stores/user-store";
+import {Style} from "../utils/mixins-decorators";
+import connectToStores from "alt/utils/connectToStores";
 
-var _s = {
+@connectToStores
+@Style({
   "base": {
     width: "50%",
     margin: "auto",
     marginTop: 50
   }
-};
+})
+class Login extends React.Component {
 
-class Login extends airflux.FluxComponent {
-    constructor(props) {
-        super(props, {user: UserStore});
-    }
+    static getStores() { return [UserStore]; }
+    static getPropsFromStores() { return {user: UserStore.getState() }; }
+
 
     renderAlreadyLoggedInMessage() {
       let submitForm = (e) => {
@@ -28,7 +30,7 @@ class Login extends airflux.FluxComponent {
       return (
         <div>
           <span>Vous êtes connecté en tant que </span>
-          <b>{this.state.user.userInfos.email}</b>
+          <b>{this.props.user.userInfos.email}</b>
           <div className="button-bar">
               <RaisedButton label="Déconnexion" primary={true}
                 onClick={submitForm}/>
@@ -64,14 +66,14 @@ class Login extends airflux.FluxComponent {
     render() {
         let content;
 
-        if (this.state.user.loggedIn) {
+        if (this.props.user.loggedIn) {
           content = this.renderAlreadyLoggedInMessage();
         } else {
           content = this.renderLoginForm();
         }
 
         return (
-            <div style={_s.base}>
+            <div style={this._("base")}>
                 <Paper zDepth={2}>
                   <div className="spacer">
                     {content}

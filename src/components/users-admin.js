@@ -1,7 +1,6 @@
 "use strict";
 
 var React = require("react/addons");
-import airflux from "airflux";
 import {Tabs, Tab, RaisedButton} from "material-ui";
 import usersActions from "../actions/users-actions.js";
 import groupsActions from "../actions/groups-actions.js";
@@ -11,23 +10,25 @@ import UsersList from "./user-admin/users-list-cpn.js";
 import GroupsList from "./user-admin/group-list-cpn";
 import GroupEditionForm from "./user-admin/group-edition-form-cpn";
 import GroupCreationForm from "./user-admin/group-creation-form-cpn";
+import {Style} from "../utils/mixins-decorators";
 
-const _s = {
+@Style({
   "action-pane": {
     padding: 5,
     width: "47%",
     float: "left"
   }
-};
-
-class UsersAdmin extends airflux.FluxComponent {
+})
+class UsersAdmin extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state.currentAction = "new-user";
-    this.state.currentUser = {};
-    this.state.currentGroup = {};
-    this.state.listWidth = 0;
+    this.state = {
+      currentAction: "new-user",
+      currentUser: {},
+      currentGroup: {},
+      listWidth: 0
+    };
   }
 
   renderForAction() {
@@ -90,7 +91,7 @@ class UsersAdmin extends airflux.FluxComponent {
             </Tab>
           </Tabs>
         </div>
-        <div style={_s["action-pane"]}>
+        <div style={this._("action-pane")}>
           <RaisedButton label="Ajouter un utilisateur" secondary={true}
             style={{marginRight: 10}}
             onClick={() => this.setState({currentAction: "new-user", currentUser: null})}/>

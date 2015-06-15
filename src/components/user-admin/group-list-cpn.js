@@ -1,25 +1,27 @@
 var React = require("react/addons");
-import airflux from "airflux";
 import groupsStore from "../../stores/groups-store.js";
-import lo from "lodash";
+import {Style} from "../../utils/mixins-decorators";
+import connectToStores from "alt/utils/connectToStores";
 
-const _s = {
-  "base": {
-    margin: "0 20px 0 20px"
-  },
-  "group-card": {
+@Style({
+  "card": {
     margin: 10,
-    cursor: "pointer",
     backgroundColor: "white",
     padding: 10,
-    border: "1px solid #CDCDCD",
-    borderLeft: "5px solid #CDCDCD",
-
-    rules: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderLeftWidth: 5,
+    borderLeftStyle: "solid",
+    $sub: {
+      notSelected: {
+        cursor: "pointer",
+        borderColor: "#CDCDCD",
+        $applyIf: (s, p) => !p.isSelected
+      },
       selected: {
         cursor: "auto",
-        border: "1px solid red",
-        borderLeft: "5px solid red"
+        borderColor: "red",
+        $applyIf: (s, p) => p.isSelected
       }
     }
   },
@@ -30,46 +32,44 @@ const _s = {
     top: -13,
     color: "#CDCDCD",
 
-    rules: {
-      "selected": {
-        color: "red"
+    $sub: {
+      selected: {
+        color: "red",
+        $applyIf: (s, p) => p.isSelected
       }
     }
   }
-};
-
-const S = (cls, rule) => {
-  return lo.merge({}, _s[cls], _s[cls].rules[rule]);
-};
-
-
-class GroupsList extends airflux.FluxComponent {
-
-  constructor (props) {
-    super(props, {groups: groupsStore});
+})
+class GroupItem extends React.Component {
+  render() {
+    let g = this.props.group;
+    return (
+      <div style={this._("card")}
+        onClick={() => this.props.onSelect(g)}>
+        <i className="mdi mdi-chevron-right"
+          style={this._("arrow")}/>
+        <h3>{g.name}</h3>
+      </div>
+    );
   }
+}
+
+@connectToStores
+class GroupsList extends React.Component {
+
+  static getStores() { return [groupsStore]; }
+  static getPropsFromStores() { return {groups: groupsStore.getState()}; }
 
   render() {
-    let groups = this.state.groups.list;
+    let groups = this.props.groups.list;
     let {width} = this.props;
-
     var _groups = groups.map(g => {
       var isSelected = this.props.selectedGroup && this.props.selectedGroup.$fbKey === g.$fbKey;
-
-      var arrowStyle = isSelected ? S("arrow", "selected") : _s.arrow;
-      var cardStyle = isSelected ? S("group-card", "selected") : _s["group-card"];
-      return (
-        <div style={cardStyle} key={g.$fbKey}
-          onClick={() => this.props.onSelect(g)}>
-          <i className="mdi mdi-chevron-right"
-            style={arrowStyle}/>
-          <h3>{g.name}</h3>
-        </div>
-      );
+      return <GroupItem group={g} isSelected={isSelected} onSelect={this.props.onSelect} key={g.$fbKey}/>;
     });
 
     return (
-      <div style={_s.base}>
+      <div style={{margin: "0 20px 0 20px"}}>
         {_groups}
       </div>
     );

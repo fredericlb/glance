@@ -1,5 +1,3 @@
-"use strict";
-
 var React = require("react/addons");
 import {Paper, TextField, RaisedButton} from "material-ui";
 import groupsActions from "../../actions/groups-actions.js";

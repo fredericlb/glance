@@ -1,7 +1,6 @@
 var React = require("react/addons");
 
 import Header from "./header-cpn.js";
-import Menu from "./menu-cpn.js";
 import {RouteHandler} from "react-router";
 
 // CSS
@@ -33,8 +32,7 @@ class Layout extends React.Component {
         return (
           <div className='main'>
             <Header/>
-            <Menu/>
-              <RouteHandler/>
+            <RouteHandler/>
           </div>
         );
     }

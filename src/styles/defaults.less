@@ -37,3 +37,57 @@ p {
 .user-badge {
 
 }
+
+.typeahead-tokenizer {
+  margin: 10px 10px 10px 0;
+
+  .typeahead input {
+    width: 100%;
+  }
+}
+
+.typeahead-selector {
+  list-style-type: none;
+  padding:0;
+  margin:0;
+
+  li {
+    margin:0;
+    width: 100%;
+    padding:0;
+    border: 1px solid #CDCDCD;
+
+    a {
+      color: black;
+
+    }
+  }
+}
+
+.typeahead-token {
+  background-color: #CDCDCD;
+  display: table;
+  margin: 10px 10px 10px 0;
+  padding: 5px;
+  float: left;
+
+  a {
+    color: #CDCDCD;
+  }
+
+  a::after {
+    color: red;
+    content: "\f55f";
+    display: inline-block;
+    font: normal normal normal 24px/1 MaterialDesignIcons;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+  }
+}
+
+h2, h3 {
+  color: #666;
+}

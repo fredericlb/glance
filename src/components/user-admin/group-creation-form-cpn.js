@@ -1,6 +1,17 @@
 var React = require("react/addons");
 import {Paper, TextField, RaisedButton} from "material-ui";
 import groupsActions from "../../actions/groups-actions.js";
+import {Tokenizer} from "react-typeahead";
+import connectToStores from "alt/utils/connectToStores";
+
+class UserCompletion extends React.Component {
+  render() {
+    return (
+      <Tokenizer
+        options={['John', 'Paul', 'George', 'Ringo']}/>
+    );
+  }
+}
 
 class GroupCreationForm extends React.Component {
 
@@ -65,6 +76,8 @@ class GroupCreationForm extends React.Component {
             value={this.state.name}
             errorText={getMessageFor("name")}
             style={{maxWidth: "100%"}}/>
+          <h3>Membres</h3>
+          <UserCompletion/>
           <div className="clearer"/>
             <RaisedButton label="Envoyer" primary={true}
               onClick={onSubmit} style={{width: "100%"}}/>

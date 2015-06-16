@@ -93,7 +93,7 @@ export function Style(styleObject) {
     var styles = new Map();
     var styleConds = new Map();
     styleConds.set("$root", new Map());
-
+    console.log(styleObject);
     Object.keys(styleObject).forEach((key) => {
       let value = styleObject[key];
       styleConds.set(key, new Map());
@@ -121,16 +121,16 @@ export function Style(styleObject) {
           !styles.get(key).$applyIf(this.state, this.props)) {
         return [{}];
       } else {
-        var clss = [styles.get(key)];
+        var clss = styles.get(key);
         for (let sub of styleConds.get(key).entries()) {
           if (sub[1].call(this, this.state, this.props)) {
-            clss.push(styles.get(`${key}/${sub[0]}`));
+            clss = lo.merge({}, clss, styles.get(`${key}/${sub[0]}`));
           }
         }
         return clss;
       }
     };
 
-    return Radium(klass);
+    return klass;
   };
 }

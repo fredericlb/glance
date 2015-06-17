@@ -1,5 +1,5 @@
 var React = require("react/addons");
-import {RaisedButton, Paper, IconButton} from "material-ui";
+import {RaisedButton, Paper, IconButton, Avatar} from "material-ui";
 import {Navigation, Style} from "../../utils/mixins-decorators.js";
 import UserStore from "../../stores/user-store.js";
 import * as gravatar from "gravatar";
@@ -11,33 +11,23 @@ import firebaseService from "../../utils/firebase-service";
 @Navigation
 @Style({
     "user-mail": {
-      marginLeft: 10,
-      lineHeight: "40px",
-      marginRight: 5
+      color: "white"
     },
     "avatar": {
-      borderRadius: 3,
-      float: "left"
+      float: "left",
+      marginRight: 10,
+      position: "relative",
+      top: 5
     },
     "user-actions": {
-      float: "right"
-    },
-    "user-badge": {
-      height: 42,
-      overflow: "hidden",
-      border: "1px solid #dedede",
-      borderRadius: 3,
-      transition: "height ease-out 100ms, border-color ease-out 200ms",
-      $sub: {
-        "with-actions": {
-          height: 84,
-          borderColor: "#999",
-          $applyIf: (s) => s.fullDisplay
-        }
-      }
+      position: "relative",
+      top: -5
     },
     "member-view": {
-      float: "right"
+      float: "right",
+      width: 200,
+      height: 50,
+      overflow: "hidden"
     }}
 )
 class MemberView extends React.Component {
@@ -72,38 +62,28 @@ class MemberView extends React.Component {
     let {loggedIn, userInfos} = this.props.user;
     var gravatarUrl = gravatar.url(userInfos.email, {
       s: "40",
-      r: "pg",
-      d: "404"
+      r: "pg"
     });
 
-    var onMouseOver = () => this.setState({fullDisplay: true});
-    var onMouseOut = () => this.setState({fullDisplay: false});
-    var classes = ["user-badge"];
-
-    if (this.state.fullDisplay) {
-      classes.push("with-actions");
-    }
-
     return (
-      <div style={this._("user-badge")}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}>
-        <Paper zDepth={1} style={{padding: 1, position: "relative"}}>
-          <img src={gravatarUrl} style={this._("avatar")}/>
-          <span style={this._("user-mail")}>{userInfos.email}</span>
-          <div style={{clear: "both"}}/>
+      <div>
+        <Avatar src={gravatarUrl} style={this._("avatar")}/>
+        <div style={{marginLeft: 10}}>
+          <div style={this._("user-mail")}>{userInfos.email}</div>
           <div style={this._("user-actions")}>
             <IconButton
-              iconClassName="mdi mdi-settings"/>
+              iconClassName="mdi mdi-settings"
+              iconStyle={{color: "white"}}/>
             <IconButton
               iconClassName="mdi mdi-account-multiple"
-              onClick={() => this.transitionTo("users")}/>
+              onClick={() => this.transitionTo("users")}
+              iconStyle={{color: "white"}}/>
             <IconButton
               iconClassName="mdi mdi-exit-to-app"
-              onClick={() => UserActions.logout()}/>
+              onClick={() => UserActions.logout()}
+              iconStyle={{color: "white"}}/>
           </div>
-          <div style={{clear: "both"}}/>
-        </Paper>
+        </div>
       </div>
     );
   }

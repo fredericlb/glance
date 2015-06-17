@@ -1,5 +1,5 @@
 var React = require("react/addons");
-import {Paper, TextField, RaisedButton} from "material-ui";
+import {Paper, TextField, RaisedButton, Avatar} from "material-ui";
 import * as gravatar from "gravatar";
 import usersActions from "../../actions/users-actions.js";
 
@@ -73,8 +73,8 @@ class UserCreationForm extends React.Component {
     return (
       <Paper zDepth={1}>
         <form style={{padding: 10}}>
-          <img src={gravatarUrl} style={{float: "right"}}/>
-          <h2>{title}</h2>
+          <h2 style={{float: "right"}}>{title}</h2>
+          <Avatar src={gravatarUrl}/>
           <TextField floatingLabelText="E-mail *"
             onChange={onFieldUpdate("email")} ref="email"
             value={this.state.email}

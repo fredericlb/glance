@@ -14,7 +14,6 @@ class Header extends React.Component {
     var iconRight = (
       <div style={{width: 500}}>
         <MemberView/>
-        <ChannelsDropdown/>
       </div>
     );
 

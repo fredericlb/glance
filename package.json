@@ -16,7 +16,7 @@
     "fixed-data-table": "^0.3.0",
     "gravatar": "^1.1.1",
     "lodash": "^3.9.3",
-    "material-ui": "^0.8.0",
+    "material-ui": "^0.9.1",
     "mdi": "^1.1.34",
     "normalize.css": "~3.0.3",
     "react": "0.13.3",

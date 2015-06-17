@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require("react/addons");
-import {Paper, TextField, RaisedButton} from "material-ui";
+import {Paper, TextField, RaisedButton, Avatar} from "material-ui";
 import * as gravatar from "gravatar";
 import usersActions from "../../actions/users-actions.js";
 
@@ -59,7 +59,7 @@ class UserEditionForm extends React.Component {
 
   render() {
     var gravatarUrl = gravatar.url(this.props.user.email, {
-      s: "80",
+      s: "160",
       r: "pg"
     });
 
@@ -87,8 +87,8 @@ class UserEditionForm extends React.Component {
     return (
       <Paper zDepth={1}>
         <form style={{padding: 10}}>
-          <img src={gravatarUrl} style={{float: "right"}}/>
-          <h2>{this.props.user.email}</h2>
+          <h2 style={{float: "right"}}>{this.props.user.email}</h2>
+          <Avatar src={gravatarUrl}/>
           <TextField floatingLabelText="Prénom *"
             onChange={onFieldUpdate("firstname")} ref="firstname"
             value={this.state.firstname}

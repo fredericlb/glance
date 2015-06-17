@@ -98,6 +98,7 @@ class GroupEditionForm extends React.Component {
             errorText={getMessageFor("name")}
             style={{width: "100%"}}/>
           <div className="clearer"/>
+          <h3 style={{marginTop: 20}}>Membres</h3>
           <UserCompletion onChange={onTokensChange}
             defaults={this.state.users}/>
           <RaisedButton label="Envoyer" primary={true}

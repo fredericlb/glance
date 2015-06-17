@@ -1,56 +1,25 @@
 var React = require("react/addons");
 import connectToStores from "alt/utils/connectToStores";
 import usersStore from "../../stores/users-store.js";
-import {Style} from "../../utils/mixins-decorators";
+import {List, ListItem, Avatar} from "material-ui";
+import * as gravatar from "gravatar";
 
-@Style({
-  "card": {
-    margin: 10,
-    backgroundColor: "white",
-    padding: 10,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderLeftWidth: 5,
-    borderLeftStyle: "solid",
-    $sub: {
-      notSelected: {
-        cursor: "pointer",
-        borderColor: "#CDCDCD",
-        $applyIf: (s, p) => !p.isSelected
-      },
-      selected: {
-        cursor: "auto",
-        borderColor: "red",
-        $applyIf: (s, p) => p.isSelected
-      }
-    }
-  },
-  "arrow": {
-    fontSize: 48,
-    float: "right",
-    position: "relative",
-    top: -3,
-    color: "#CDCDCD",
-
-    $sub: {
-      "selected": {
-        color: "red",
-        $applyIf: (s, p) => p.isSelected
-      }
-    }
-  }
-})
 class UserItem extends React.Component {
   render() {
     let u = this.props.user;
+
+    var gravatarUrl = gravatar.url(u.email, {
+      s: "80",
+      r: "pg"
+    });
+
     return (
-      <div style={this._("card")}
-        onClick={() => this.props.onSelect(u)}>
-        <i className="mdi mdi-chevron-right"
-          style={this._("arrow")}/>
-        <h3>{u.email}</h3>
-        <div>{u.firstname} {u.lastname}</div>
-      </div>
+      <ListItem
+        leftAvatar={<Avatar src={gravatarUrl} />}
+        secondaryText={`${u.firstname} ${u.lastname}`}
+        onTouchTap={() => this.props.onSelect(u)}>
+        {u.email}
+      </ListItem>
     );
   }
 }
@@ -76,9 +45,9 @@ class UsersList extends React.Component {
     });
 
     return (
-      <div style={{margin: "0 20px 0 20px"}}>
+      <List subheader="Utilisateurs">
         {_users}
-      </div>
+      </List>
     );
 
   }

@@ -1,22 +1,28 @@
 var React = require("react/addons");
 import {Paper, TextField, RaisedButton} from "material-ui";
 import groupsActions from "../../actions/groups-actions.js";
+import UserCompletion from "../form/user-completion.js";
 
 class GroupEditionForm extends React.Component {
+
+  static propTypes = {
+    group: React.PropTypes.object.isRequired
+  };
 
   constructor() {
     super();
     this.state = {
-      name: null
+      name: null,
+      users: []
     };
   }
 
   onSubmit() {
-    let {name} = this.state;
+    let {name, users} = this.state;
 
     let group = {
       name: name,
-      users: this.props.group.users
+      users: users
     };
 
     if (name !== "") {
@@ -28,7 +34,8 @@ class GroupEditionForm extends React.Component {
 
   reset() {
     this.setState({
-      name: null
+      name: null,
+      users: []
     });
   }
 
@@ -39,7 +46,8 @@ class GroupEditionForm extends React.Component {
     }
 
     this.setState({
-      name: group.name
+      name: group.name,
+      users: group.users
     });
   }
 
@@ -73,6 +81,13 @@ class GroupEditionForm extends React.Component {
       };
     };
 
+    let onTokensChange = (tokens) => {
+      let ids = tokens.map(
+        t => t.split(/[<>]/)[1].replace(".", "!")
+      );
+      this.setState({users: ids});
+    };
+
     return (
       <Paper zDepth={1}>
         <form style={{padding: 10}}>
@@ -83,6 +98,8 @@ class GroupEditionForm extends React.Component {
             errorText={getMessageFor("name")}
             style={{width: "100%"}}/>
           <div className="clearer"/>
+          <UserCompletion onChange={onTokensChange}
+            defaults={this.state.users}/>
           <RaisedButton label="Envoyer" primary={true}
             onClick={onSubmit}
             style={{width: "100%"}}/>

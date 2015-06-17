@@ -42,7 +42,7 @@ module.exports = {
       exclude: /node_modules/,
       loaders: [
           'react-hot',
-          'babel-loader?experimental=1&stage=1'
+          'babel-loader?experimental=1&stage=0'
       ]
     }, {
       test: /\.css$/,

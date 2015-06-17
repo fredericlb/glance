@@ -20,13 +20,14 @@ class GroupsStore {
     onSave({group}) {
       this.ref().push().set({
         name: group.name,
-        users: {}
+        users: group.users
       });
     }
 
     onUpdate(opts) {
       let {group, nextGroup} = opts;
-      this.ref().child(group.$fbKey).child("name").set(nextGroup.name);
+      this.ref().child(group.$fbKey)
+        .set(nextGroup);
     }
 }
 

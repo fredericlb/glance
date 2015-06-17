@@ -1,35 +1,30 @@
 var React = require("react/addons");
 import {Paper, TextField, RaisedButton} from "material-ui";
 import groupsActions from "../../actions/groups-actions.js";
-import {Tokenizer} from "react-typeahead";
-import connectToStores from "alt/utils/connectToStores";
-
-class UserCompletion extends React.Component {
-  render() {
-    return (
-      <Tokenizer
-        options={['John', 'Paul', 'George', 'Ringo']}/>
-    );
-  }
-}
+import UserCompletion from "../form/user-completion.js";
 
 class GroupCreationForm extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      name: null
+      name: null,
+      users: []
     };
   }
 
   onSubmit() {
-    let {name} = this.state;
-
     let group = {
-      name: name
+      name: this.state.name,
+      users: this.state.users
     };
 
-    if (name !== "") {
+    if (this.state.name === null) {
+      this.state.name = "";
+    }
+
+    let {name} = this.state;
+    if (name && name !== "") {
       groupsActions.save(group);
       this.reset();
     }
@@ -38,7 +33,8 @@ class GroupCreationForm extends React.Component {
 
   reset() {
     this.setState({
-      name: null
+      name: null,
+      users: []
     });
   }
 
@@ -65,6 +61,13 @@ class GroupCreationForm extends React.Component {
       };
     };
 
+    let onTokensChange = (tokens) => {
+      let ids = tokens.map(
+        t => t.split(/[<>]/)[1].replace(".", "!")
+      );
+      this.setState({users: ids});
+    };
+
     let title = "Nouveau groupe";
 
     return (
@@ -76,8 +79,9 @@ class GroupCreationForm extends React.Component {
             value={this.state.name}
             errorText={getMessageFor("name")}
             style={{maxWidth: "100%"}}/>
-          <h3>Membres</h3>
-          <UserCompletion/>
+          <h3 style={{marginTop: 20}}>Membres</h3>
+          <UserCompletion
+            onChange={onTokensChange}/>
           <div className="clearer"/>
             <RaisedButton label="Envoyer" primary={true}
               onClick={onSubmit} style={{width: "100%"}}/>
